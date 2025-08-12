@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/cynicdog/grpc-prep/proto/helloworld"
+	pb "github.com/cynicdog/grpc-prep/proto/helloworld"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -34,14 +34,14 @@ func main() {
 	defer conn.Close()
 
 	// Create a new client stub from the connection for the Greeter service
-	c := helloworld.NewGreeterClient(conn)
+	c := pb.NewGreeterClient(conn)
 
 	// Create a context with a 1-second timeout for the RPC call
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
 	// Call the SayHello method on the Greeter service with the provided name
-	r, err := c.SayHello(ctx, &helloworld.HelloRequest{Name: *name})
+	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
 	if err != nil {
 		log.Fatalf("Could not greet: %v", err)
 	}

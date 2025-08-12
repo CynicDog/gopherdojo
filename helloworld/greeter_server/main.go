@@ -7,7 +7,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/cynicdog/grpc-prep/proto/helloworld"
+	pb "github.com/cynicdog/grpc-prep/proto/helloworld"
 	"google.golang.org/grpc"
 )
 
@@ -16,12 +16,12 @@ var (
 )
 
 type server struct {
-	helloworld.UnimplementedGreeterServer
+	pb.UnimplementedGreeterServer
 }
 
-func (s *server) SayHello(_ context.Context, in *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
+func (s *server) SayHello(_ context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
-	return &helloworld.HelloReply{Message: "Hello " + in.GetName()}, nil
+	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
 func main() {
@@ -37,7 +37,7 @@ func main() {
 	s := grpc.NewServer()
 
 	// Register the Greeter service implementation with the gRPC server
-	helloworld.RegisterGreeterServer(s, &server{})
+	pb.RegisterGreeterServer(s, &server{})
 	log.Printf("Server listening at %v", lis.Addr())
 
 	// Start serving incoming connections; block here until server stops or error occurs
