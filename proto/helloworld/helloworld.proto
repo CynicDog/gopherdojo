@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package helloworld;
 
-option go_package = "github.com/cynicdog/grpc-prep/helloworld;helloworld";
+option go_package = "github.com/cynicdog/grpc-prep/proto/helloworld;helloworld";
 
 // The greeting service definition
 service Greeter {

@@ -17,7 +17,7 @@ const (
 
 var (
 	// Command-line flag for the gRPC server address, with a default value
-	addr = flag.String("addr", "localhost:500051", "the address to connect to")
+	addr = flag.String("addr", "localhost:50051", "the address to connect to")
 	// Command-line flag for the name to send in the greeting request
 	name = flag.String("name", defaultName, "Name to greet")
 )
