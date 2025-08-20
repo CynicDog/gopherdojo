@@ -1,0 +1,1 @@
+Notes on https://www.manning.com/books/learn-concurrent-programming-with-go
