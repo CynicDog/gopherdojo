@@ -112,3 +112,29 @@ Inlining is a compiler optimization where a function call is replaced with the b
 * Question whether **shared memory is necessary**—sometimes goroutines can communicate without sharing state (e.g., via channels).
 * Identify **critical code sections** and protect them using proper synchronization.
 * Good concurrent programming involves **coordination and communication**, like marking resources in use, to avoid overlapping operations.
+
+### What happens when `age := 10; age += 10`? 
+
+When you execute the Go code `age := 10` followed by `age += 10`, a series of events occur at the lowest levels of your computer's hardware and software stack. This isn't an instantaneous, single action but rather a choreographed sequence involving the CPU, caches, and memory.
+
+#### Compiler and Assembly
+First, the Go compiler translates your high-level code into **machine code** (a binary format) and **assembly instructions** for your specific CPU architecture (like x86-64). The Go statements would be compiled into assembly instructions like:
+
+* `age := 10`: This might become an instruction to **move** the literal value `10` into a CPU register.
+* `age += 10`: This becomes an **add** instruction that takes the value in that register and adds the value `10` to it, storing the result back in the register.
+
+#### Process and Thread
+When your Go program runs, the operating system creates a **process** for it. This process is a container for the program's code, data, and resources. Inside this process, at least one **thread** is created. This thread is the unit of execution that the OS scheduler manages. The **thread** is what actually runs the assembly instructions.
+
+#### CPU and Registers
+The thread's instructions are fed to the CPU. The CPU has a set of high-speed storage locations called **registers**. These are the fastest form of memory on the computer, directly on the CPU die.
+
+* The CPU executes the `age := 10` instruction by moving the value `10` into a specific register, say `EAX`. Now, the `EAX` register holds the value `10`.
+* Next, the CPU executes the `age += 10` instruction. It takes the value from the `EAX` register (`10`), adds `10` to it, and stores the result (`20`) back in the same register. The `EAX` register now holds the value `20`.
+
+#### Caches and Main Memory
+While the variable `age` is being manipulated, its value might not be in **main memory** (RAM). It would most likely be held in the CPU's **cache hierarchy**.
+
+* **L1 Cache**: The value `10` is loaded into the L1 cache from main memory (if not already there) when the Go program starts or when the variable is first accessed. The L1 cache is the smallest and fastest cache, closest to the CPU.
+* **Registers**: The CPU loads the value from the L1 cache into a register to perform the arithmetic. This is the **most common scenario**.
+* **Cache Write-Back**: After the calculation, the new value (`20`) is stored back into the L1 cache. The cache system will eventually propagate this change to the **L2 cache**, then the **L3 cache**, and finally to **main memory**. This process is called a **cache write-back**. This propagation to main memory is not immediate; it happens later based on the cache's write policy.
