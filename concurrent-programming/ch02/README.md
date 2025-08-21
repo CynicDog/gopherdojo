@@ -1,10 +1,10 @@
-### 1. Processes vs. Threads
+### Processes vs. Threads
 
 * A **process** is a running program. Each process has its own memory space.
 * A **thread** is a "path of execution" inside a process. Multiple threads in the same process share memory but can run independently.
 
 
-### 2. Kernel-level threads (KLTs)
+### Kernel-level threads (KLTs)
 
 * These are the “real” threads the **operating system (OS) manages directly**.
 * The OS decides:
@@ -17,7 +17,7 @@
 > Every kernel-level thread can be mapped to a CPU core (so multiple can run in parallel if multiple cores exist).
 
 
-### 3. User-level threads (ULTs)
+### User-level threads (ULTs)
 
 * Instead of the OS, **the application itself manages these threads**.
 * They run "on top of" one kernel-level thread.
@@ -29,7 +29,7 @@
 > Limitation: If one user-level thread gets blocked (e.g., waiting for network data), the whole kernel-level thread is blocked, and all other user-level threads inside it are stuck too.
 
 
-### 4. Goroutines (Go’s solution)
+### Goroutines (Go’s solution)
 
 Goroutines are **not OS threads** and **not exactly user-level threads either**. They’re lighter and more flexible.
 
