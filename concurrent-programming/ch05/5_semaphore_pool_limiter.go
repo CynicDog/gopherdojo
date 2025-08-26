@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/cynicdog/gopherdojo/concurrent-programming/ch05/semaphore"
 )
