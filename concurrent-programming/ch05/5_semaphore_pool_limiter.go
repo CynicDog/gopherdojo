@@ -7,7 +7,7 @@ import (
 	"github.com/cynicdog/gopherdojo/concurrent-programming/ch05/semaphore"
 )
 
-func _doWork(semaphore *Semaphore, id int, wg *sync.WaitGroup) {
+func _doWork(semaphore *semaphore.Semaphore, id int, wg *sync.WaitGroup) {
 	defer wg.Done()           // mark this worker as finished when function exits
 	semaphore.Acquire()       // request a permit (may block if none available)
 	defer semaphore.Release() // return the permit when finished
@@ -18,7 +18,7 @@ func _doWork(semaphore *Semaphore, id int, wg *sync.WaitGroup) {
 
 func main() {
 	const maxConcurrent = 3
-	semaphore := NewSemaphore(maxConcurrent)
+	semaphore := semaphore.New(maxConcurrent)
 
 	// wg (WaitGroup) is used to wait until all launched goroutines finish
 	var wg sync.WaitGroup
