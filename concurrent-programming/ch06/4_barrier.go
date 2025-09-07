@@ -2,34 +2,12 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
+
+	"github.com/cynicdog/gopherdojo/concurrent-programming/ch06/barrier"
 )
 
-type Barrier struct {
-	size int 
-	waitCount int 
-	cond *sync.Cond
-}
-
-func NewBarrier(size int) *Barrier {
-	condVar := sync.NewCond(&sync.Mutex{})
-	return &Barrier{size, 0, condVar}
-}
-
-func (b *Barrier) Wait() {
-	b.cond.L.Lock()
-	b.waitCount += 1
-	if b.waitCount == b.size {
-		b.waitCount = 0 
-		b.cond.Broadcast()
-	} else {
-		b.cond.Wait()
-	}
-	b.cond.L.Unlock()
-}
-
-func workAndWait(name string, timeToWork int, barrier *Barrier) {
+func workAndWait(name string, timeToWork int, barrier *barrier.Barrier) {
 	start := time.Now()
 	for {
 		fmt.Println(time.Since(start), name, "is running")
@@ -40,7 +18,7 @@ func workAndWait(name string, timeToWork int, barrier *Barrier) {
 }
 
 func main() {
-	barrier := NewBarrier(2) 
+	barrier := barrier.New(2) 
 	go workAndWait("Red", 4, barrier)
 	go workAndWait("Blue", 10, barrier)
 	time.Sleep(100 * time.Second)

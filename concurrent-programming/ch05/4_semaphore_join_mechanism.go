@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/cynicdog/gopherdojo/concurrent-programming/ch05/semaphore"
 )
 
 func doWork(semaphore *semaphore.Semaphore) {
