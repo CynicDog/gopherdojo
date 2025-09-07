@@ -54,23 +54,21 @@ func main() {
 		go rowMultiply(&matrixA, &matrixB, &result, row, barrier)
 	}
 
-	for i := 0; i < matrixSize+1; i++ {
-		generateRandMatrix(&matrixA)
-		generateRandMatrix(&matrixB)
+	generateRandMatrix(&matrixA)
+	generateRandMatrix(&matrixB)
 
-		// Main goroutine joins the workers at the barrier,
-		// releasing them all to start computing their rows
-		// once matrices A and B are ready.
-		barrier.Wait()
+	// Main goroutine joins the workers at the barrier,
+	// releasing them all to start computing their rows
+	// once matrices A and B are ready.
+	barrier.Wait()
 
-		// Main goroutine waits here until all workers finish
-		// computing their rows. At this point, the result
-		// matrix is fully populated and safe to print.
-		barrier.Wait()
+	// Main goroutine waits here until all workers finish
+	// computing their rows. At this point, the result
+	// matrix is fully populated and safe to print.
+	barrier.Wait()
 
-		for i := 0; i < matrixSize; i++ {
-			fmt.Println(matrixA[i], matrixB[i], result[i])
-		}
-		fmt.Println()
+	for i := 0; i < matrixSize; i++ {
+		fmt.Println(matrixA[i], matrixB[i], result[i])
 	}
+	fmt.Println()
 }
