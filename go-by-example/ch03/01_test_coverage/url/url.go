@@ -2,7 +2,6 @@ package url
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 )
 
@@ -16,7 +15,7 @@ type URL struct {
 // Parse parses a URL string into a URL structure.
 func Parse(rawURL string) (*URL, error) {
 	scheme, rest, ok := strings.Cut(rawURL, ":")
-	if !ok {
+	if !ok || scheme == "" {
 		return nil, errors.New("missing scheme")
 	}
 	if !strings.HasPrefix(rest, "//") {
@@ -33,6 +32,40 @@ func Parse(rawURL string) (*URL, error) {
 }
 
 // String reassembles the URL into a URL string.
+//
+// We can call a method (such as String) on a nil *URL because internally,
+// a method is a function that takes a receiver argument as its first parameter:
+//
+//	func String(u *URL) string {
+//	    ...
+//	}
+//
+// Suppose that `uri` is a *URL variable. Calling `uri.String()` is equivalent to calling:
+//
+//	(*URL).String(uri)
+//
+// The (*URL) part tells the compiler which type’s String method to call.
+// Here, we call the *URL type’s String method, passing it `uri` as the receiver.
+// Because the receiver name of the String method is `u`, String receives a copy
+// of `uri` as `u`. Both point to the same memory location.
+//
+// This means it’s safe to check if `u == nil` within the method, as shown below.
 func (u *URL) String() string {
-	return fmt.Sprintf("%s://%s/%s", u.Scheme, u.Host, u.Path)
+	if u == nil {
+		return ""
+	}
+
+	var s string
+	if sc := u.Scheme; sc != "" {
+		s += sc
+		s += "://"
+	}
+	if h := u.Host; h != "" {
+		s += h
+	}
+	if p := u.Path; p != "" {
+		s += "/"
+		s += p
+	}
+	return s
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/cynicdog/gopherdojo/go-by-example/01_test_coverage/url"
+	"github.com/cynicdog/gopherdojo/go-by-example/ch03/01_test_coverage/url"
 )
 
 func main() {

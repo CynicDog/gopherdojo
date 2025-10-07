@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/cynicdog/gopherdojo/go-by-example/01_groundwork/url"
+	"github.com/cynicdog/gopherdojo/go-by-example/ch02/01_groundwork/url"
 )
 
 func ExampleParse() {

@@ -1,7 +1,7 @@
 package url_test
 
 import (
-	. "github.com/cynicdog/gopherdojo/go-by-example/01_groundwork/url"
+	. "github.com/cynicdog/gopherdojo/go-by-example/ch02/01_groundwork/url"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
